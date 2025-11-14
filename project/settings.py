@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'blogs',
     'rest_framework',
     'corsheaders',
-    'rest_framework.authtoken',
+    'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     
 ]
 
@@ -138,11 +139,19 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
-        'rest_framework.authentication.TokenAuthentication',
+        'rest_framework.simplejwt.authentication.JWTAuthentication',
     ],
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
     ],
+}
+
+
+SIMPLE_JWT = {
+    "ALGORITHM": "RS384",
+    "SIGNING_KEY": open("private.pem").read(),
+    "VERIFYING_KEY": open("public.pem").read(),
+    "BLACKLIST_AFTER_ROTATION": True,
 }
 
 

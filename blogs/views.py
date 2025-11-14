@@ -5,7 +5,14 @@ from .serializers import PostSerializer, CommentSerializer
 from rest_framework.generics import ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.filters import SearchFilter ,OrderingFilter
 from .filters import PostFilter ,CommentFilter
+from rest_framework.pagination import PageNumberPagination
 
+
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+    
 class PostListCreateView(ListCreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
@@ -15,7 +22,7 @@ class PostListCreateView(ListCreateAPIView):
     ordering_fields = ['create_at', 'update_at']
     ordering = ['-create_at']
     permission_classes = [IsAuthenticatedOrReadOnly]
-    # pagination_class =
+    pagination_class = StandardResultsSetPagination
     
     def perform_create(self, serializer):
         profile = self.request.user.profile 
